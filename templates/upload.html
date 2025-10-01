@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Upload Health Data</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; background-color: #f0f2f5; margin: 0; }
+        .container { background: #fff; padding: 40px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); text-align: center; }
+        h1 { margin-top: 0; }
+        input[type="file"] { border: 1px solid #ccc; padding: 10px; border-radius: 4px; }
+        input[type="submit"] { background: #007aff; color: white; border: none; padding: 12px 20px; border-radius: 4px; font-size: 16px; cursor: pointer; margin-top: 20px; }
+        input[type="submit"]:hover { background: #0056b3; }
+        .note { font-size: 0.9em; color: #666; margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Upload Apple Health Export</h1>
+        <form method=post enctype=multipart/form-data>
+            <input type=file name=file accept=".zip">
+            <input type=submit value=Upload>
+        </form>
+        <p class="note">Please upload the 'export.zip' file from the Apple Health app.</p>
+        <p><a href="/">Go to Dashboard</a></p>
+    </div>
+</body>
+</html>
