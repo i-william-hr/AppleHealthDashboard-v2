@@ -9,6 +9,12 @@ from datetime import datetime, timedelta, timezone
 from flask import Flask, jsonify, request, Response, render_template, redirect, url_for
 from werkzeug.utils import secure_filename
 
+# --- NEW: Configure logging to hide Waitress warnings ---
+import logging
+logger = logging.getLogger('waitress')
+logger.setLevel(logging.ERROR)
+# ---------------------------------------------------------
+
 # --- CONFIGURATION ---
 DB_FILE = 'health.db'
 UPLOAD_FOLDER = 'uploads'
@@ -24,7 +30,8 @@ app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 1024 * 1024 * 1024
 
-# --- BACKGROUND IMPORT LOGIC ---
+# --- The rest of the file is unchanged ---
+# ... (all other functions remain the same) ...
 def run_full_import(zip_path):
     global import_status
     try:
@@ -211,13 +218,11 @@ def get_summary_data():
     with sqlite3.connect(DB_FILE) as conn:
         cursor = conn.cursor()
         
-        # --- Resting HR ---
         cursor.execute("SELECT MIN(record_value) FROM health_data WHERE record_type = 'HKQuantityTypeIdentifierRestingHeartRate' AND start_date >= ?", [start_date.isoformat()])
         summary['lowest_rhr'] = cursor.fetchone()[0]
         cursor.execute("SELECT MAX(record_value) FROM health_data WHERE record_type = 'HKQuantityTypeIdentifierRestingHeartRate' AND start_date >= ?", [start_date.isoformat()])
         summary['highest_rhr'] = cursor.fetchone()[0]
 
-        # --- Daily Steps ---
         steps_subquery = "(SELECT SUM(record_value) as daily_total FROM health_data WHERE record_type = 'HKQuantityTypeIdentifierStepCount' AND start_date >= ? GROUP BY date(start_date))"
         cursor.execute(f"SELECT AVG(daily_total) FROM {steps_subquery}", [start_date.isoformat()])
         summary['avg_steps'] = cursor.fetchone()[0]
@@ -226,11 +231,9 @@ def get_summary_data():
         cursor.execute(f"SELECT MAX(daily_total) FROM {steps_subquery}", [start_date.isoformat()])
         summary['max_daily_steps'] = cursor.fetchone()[0]
         
-        # --- Highest HRV ---
         cursor.execute("SELECT MAX(record_value) FROM health_data WHERE record_type = 'HKQuantityTypeIdentifierHeartRateVariabilitySDNN' AND start_date >= ?", [start_date.isoformat()])
         summary['highest_hrv'] = cursor.fetchone()[0]
 
-        # --- Sleep ---
         sleep_types = ['HKCategoryValueSleepAnalysisAsleepDeep', 'HKCategoryValueSleepAnalysisAsleepCore', 'HKCategoryValueSleepAnalysisAsleepREM']
         placeholders = ','.join('?' for _ in sleep_types)
         sleep_subquery = f"(SELECT SUM(record_value) as daily_total FROM health_data WHERE record_type IN ({placeholders}) AND start_date >= ? GROUP BY date(start_date))"
