@@ -5,7 +5,7 @@ import xml.etree.ElementTree as ET
 import zipfile
 import threading
 import time
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timedelta, timezone 
 from flask import Flask, jsonify, request, Response, render_template, redirect, url_for
 from werkzeug.utils import secure_filename
 
@@ -210,16 +210,24 @@ def get_summary_data():
     summary = {}
     with sqlite3.connect(DB_FILE) as conn:
         cursor = conn.cursor()
+        
         cursor.execute("SELECT MIN(record_value) FROM health_data WHERE record_type = 'HKQuantityTypeIdentifierRestingHeartRate' AND start_date >= ?", [start_date.isoformat()])
         summary['lowest_rhr'] = cursor.fetchone()[0]
+
+        cursor.execute("SELECT MAX(record_value) FROM health_data WHERE record_type = 'HKQuantityTypeIdentifierRestingHeartRate' AND start_date >= ?", [start_date.isoformat()])
+        summary['highest_rhr'] = cursor.fetchone()[0]
+
         cursor.execute("SELECT AVG(daily_total) FROM (SELECT SUM(record_value) as daily_total FROM health_data WHERE record_type = 'HKQuantityTypeIdentifierStepCount' AND start_date >= ? GROUP BY date(start_date))", [start_date.isoformat()])
         summary['avg_steps'] = cursor.fetchone()[0]
+        
         cursor.execute("SELECT MAX(record_value) FROM health_data WHERE record_type = 'HKQuantityTypeIdentifierHeartRateVariabilitySDNN' AND start_date >= ?", [start_date.isoformat()])
         summary['highest_hrv'] = cursor.fetchone()[0]
+
         sleep_types = ['HKCategoryValueSleepAnalysisAsleepDeep', 'HKCategoryValueSleepAnalysisAsleepCore', 'HKCategoryValueSleepAnalysisAsleepREM']
         placeholders = ','.join('?' for _ in sleep_types)
         cursor.execute(f"SELECT AVG(daily_total) FROM (SELECT SUM(record_value) as daily_total FROM health_data WHERE record_type IN ({placeholders}) AND start_date >= ? GROUP BY date(start_date))", sleep_types + [start_date.isoformat()])
         summary['avg_sleep_minutes'] = cursor.fetchone()[0]
+        
     return jsonify(summary)
 
 if __name__ == '__main__':
