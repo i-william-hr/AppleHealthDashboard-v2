@@ -211,22 +211,35 @@ def get_summary_data():
     with sqlite3.connect(DB_FILE) as conn:
         cursor = conn.cursor()
         
+        # --- Resting HR ---
         cursor.execute("SELECT MIN(record_value) FROM health_data WHERE record_type = 'HKQuantityTypeIdentifierRestingHeartRate' AND start_date >= ?", [start_date.isoformat()])
         summary['lowest_rhr'] = cursor.fetchone()[0]
-
         cursor.execute("SELECT MAX(record_value) FROM health_data WHERE record_type = 'HKQuantityTypeIdentifierRestingHeartRate' AND start_date >= ?", [start_date.isoformat()])
         summary['highest_rhr'] = cursor.fetchone()[0]
 
-        cursor.execute("SELECT AVG(daily_total) FROM (SELECT SUM(record_value) as daily_total FROM health_data WHERE record_type = 'HKQuantityTypeIdentifierStepCount' AND start_date >= ? GROUP BY date(start_date))", [start_date.isoformat()])
+        # --- Daily Steps ---
+        steps_subquery = "(SELECT SUM(record_value) as daily_total FROM health_data WHERE record_type = 'HKQuantityTypeIdentifierStepCount' AND start_date >= ? GROUP BY date(start_date))"
+        cursor.execute(f"SELECT AVG(daily_total) FROM {steps_subquery}", [start_date.isoformat()])
         summary['avg_steps'] = cursor.fetchone()[0]
+        cursor.execute(f"SELECT MIN(daily_total) FROM {steps_subquery}", [start_date.isoformat()])
+        summary['min_daily_steps'] = cursor.fetchone()[0]
+        cursor.execute(f"SELECT MAX(daily_total) FROM {steps_subquery}", [start_date.isoformat()])
+        summary['max_daily_steps'] = cursor.fetchone()[0]
         
+        # --- Highest HRV ---
         cursor.execute("SELECT MAX(record_value) FROM health_data WHERE record_type = 'HKQuantityTypeIdentifierHeartRateVariabilitySDNN' AND start_date >= ?", [start_date.isoformat()])
         summary['highest_hrv'] = cursor.fetchone()[0]
 
+        # --- Sleep ---
         sleep_types = ['HKCategoryValueSleepAnalysisAsleepDeep', 'HKCategoryValueSleepAnalysisAsleepCore', 'HKCategoryValueSleepAnalysisAsleepREM']
         placeholders = ','.join('?' for _ in sleep_types)
-        cursor.execute(f"SELECT AVG(daily_total) FROM (SELECT SUM(record_value) as daily_total FROM health_data WHERE record_type IN ({placeholders}) AND start_date >= ? GROUP BY date(start_date))", sleep_types + [start_date.isoformat()])
+        sleep_subquery = f"(SELECT SUM(record_value) as daily_total FROM health_data WHERE record_type IN ({placeholders}) AND start_date >= ? GROUP BY date(start_date))"
+        cursor.execute(f"SELECT AVG(daily_total) FROM {sleep_subquery}", sleep_types + [start_date.isoformat()])
         summary['avg_sleep_minutes'] = cursor.fetchone()[0]
+        cursor.execute(f"SELECT MIN(daily_total) FROM {sleep_subquery}", sleep_types + [start_date.isoformat()])
+        summary['min_sleep_minutes'] = cursor.fetchone()[0]
+        cursor.execute(f"SELECT MAX(daily_total) FROM {sleep_subquery}", sleep_types + [start_date.isoformat()])
+        summary['max_sleep_minutes'] = cursor.fetchone()[0]
         
     return jsonify(summary)
 
