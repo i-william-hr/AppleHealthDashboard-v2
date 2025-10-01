@@ -24,7 +24,7 @@ Linux Debian: apt install python3 python3-flask python3-waitress
 
 
 
-#Start, Automatically binds on port 880 on all IPs
+#Start, Automatically binds on port 8080 on all IPs (can be changed in app.py if needed)
 
 Linux: python3 app.py
 
