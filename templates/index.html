@@ -8,72 +8,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@2.0.1/dist/chartjs-plugin-zoom.min.js"></script>
     <style>
-        :root {
-            --bg-color: #f0f2f5;
-            --text-color: #1c1e21;
-            --card-bg-color: #fff;
-            --card-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            --header-color: #000;
-            --button-bg: #e4e6eb;
-            --button-text: #050505;
-            --button-active-bg: #007aff;
-            --button-active-text: white;
-            --chart-grid-color: rgba(0, 0, 0, 0.1);
-        }
-        body.dark-mode {
-            --bg-color: #18191a;
-            --text-color: #e4e6eb;
-            --card-bg-color: #242526;
-            --card-shadow: 0 2px 4px rgba(0,0,0,0.3);
-            --header-color: #e4e6eb;
-            --button-bg: #3a3b3c;
-            --button-text: #e4e6eb;
-            --button-active-bg: #2e89ff;
-            --button-active-text: white;
-            --chart-grid-color: rgba(255, 255, 255, 0.1);
-        }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            margin: 0; padding: 15px;
-            transition: background-color 0.3s, color 0.3s;
-        }
-        .header { text-align: center; margin-bottom: 20px; }
-        .title-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 10px;
-        }
-        h1 { color: var(--header-color); font-size: 1.5em; text-align: left; margin: 0; }
-        #date-range-selector { margin-top: 15px; }
-        #date-range-selector button {
-            background: var(--button-bg); color: var(--button-text); border: none; border-radius: 6px;
-            padding: 8px 12px; margin: 0 5px; cursor: pointer;
-            font-family: -apple-system, BlinkMacSystemFont, sans-serif; font-size: 14px;
-        }
-        #date-range-selector button.active {
-            background: var(--button-active-bg); color: var(--button-active-text); font-weight: 600;
-        }
-        .summary-grid {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 15px; margin-bottom: 20px;
-        }
-        .summary-card {
-            background-color: var(--card-bg-color); border-radius: 8px;
-            box-shadow: var(--card-shadow); padding: 15px; text-align: center;
-        }
-        .summary-card h2 { margin: 0; font-size: 1.8em; color: var(--header-color); }
-        .summary-card p { margin: 5px 0 0; font-size: 0.8em; text-transform: uppercase; }
-        /* MODIFIED: Reduced min-width for better mobile display */
-        .dashboard-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 15px; }
-        .chart-container { background: var(--card-bg-color); border-radius: 8px; box-shadow: var(--card-shadow); padding: 15px; }
-        .dark-mode-toggle { flex-shrink: 0; margin-left: 15px; }
-        .switch{position:relative;display:inline-block;width:50px;height:28px}.switch input{opacity:0;width:0;height:0}.slider{position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background-color:#ccc;-webkit-transition:.4s;transition:.4s}.slider:before{position:absolute;content:"";height:20px;width:20px;left:4px;bottom:4px;background-color:white;-webkit-transition:.4s;transition:.4s}input:checked+.slider{background-color:#2196F3}input:checked+.slider:before{-webkit-transform:translateX(22px);-ms-transform:translateX(22px);transform:translateX(22px)}.slider.round{border-radius:28px}.slider.round:before{border-radius:50%}
-        #status-banner { padding: 10px; text-align: center; font-weight: 500; display: none; margin-bottom: 20px; border-radius: 6px; }
-        #status-banner.running { background-color: #ffc107; color: #333; }
-        #status-banner.error { background-color: #dc3545; color: white; }
+        :root{--bg-color:#f0f2f5;--text-color:#1c1e21;--card-bg-color:#fff;--card-shadow:0 2px 4px rgba(0,0,0,0.1);--header-color:#000;--button-bg:#e4e6eb;--button-text:#050505;--button-active-bg:#007aff;--button-active-text:white;--chart-grid-color:rgba(0,0,0,0.1)}body.dark-mode{--bg-color:#18191a;--text-color:#e4e6eb;--card-bg-color:#242526;--card-shadow:0 2px 4px rgba(0,0,0,0.3);--header-color:#e4e6eb;--button-bg:#3a3b3c;--button-text:#e4e6eb;--button-active-bg:#2e89ff;--button-active-text:white;--chart-grid-color:rgba(255,255,255,0.1)}body{font-family:-apple-system,BlinkMacSystemFont,sans-serif;background-color:var(--bg-color);color:var(--text-color);margin:0;padding:15px;transition:background-color .3s,color .3s}.header{text-align:center;margin-bottom:20px;position:relative}.title-bar{display:flex;justify-content:space-between;align-items:center;padding:0 10px}h1{color:var(--header-color);font-size:1.5em;text-align:left;margin:0}#date-range-selector{margin-top:15px}#date-range-selector button{background:var(--button-bg);color:var(--button-text);border:none;border-radius:6px;padding:8px 12px;margin:0 5px;cursor:pointer;font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:14px}#date-range-selector button.active{background:var(--button-active-bg);color:var(--button-active-text);font-weight:600}.summary-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:15px;margin-bottom:20px}.summary-card{background-color:var(--card-bg-color);border-radius:8px;box-shadow:var(--card-shadow);padding:15px;text-align:center}.summary-card h2{margin:0;font-size:1.8em;color:var(--header-color)}.summary-card p{margin:5px 0 0;font-size:.8em;text-transform:uppercase}.dashboard-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(350px,1fr));gap:15px}.chart-container{background:var(--card-bg-color);border-radius:8px;box-shadow:var(--card-shadow);padding:15px}.dark-mode-toggle{flex-shrink:0;margin-left:15px}.switch{position:relative;display:inline-block;width:50px;height:28px}.switch input{opacity:0;width:0;height:0}.slider{position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background-color:#ccc;-webkit-transition:.4s;transition:.4s}.slider:before{position:absolute;content:"";height:20px;width:20px;left:4px;bottom:4px;background-color:white;-webkit-transition:.4s;transition:.4s}input:checked+.slider{background-color:#2196F3}input:checked+.slider:before{-webkit-transform:translateX(22px);-ms-transform:translateX(22px);transform:translateX(22px)}.slider.round{border-radius:28px}.slider.round:before{border-radius:50%}#status-banner{padding:10px;text-align:center;font-weight:500;display:none;margin-bottom:20px;border-radius:6px}#status-banner.running{background-color:#ffc107;color:#333}#status-banner.error{background-color:#dc3545;color:white}
     </style>
 </head>
 <body>
@@ -107,63 +42,64 @@
     <script>
         const baseZoomOptions = { pan: { enabled: true, mode: 'x' }, zoom: { wheel: { enabled: true }, pinch: { enabled: true }, mode: 'x' } };
 
-        async function createChart(canvasId, apiEndpoint, chartConfig) {
+        async function createChart(canvasId, apiEndpoint, chartConfig, fullDateLabels, minDate, maxDate) {
             const ctx = document.getElementById(canvasId).getContext('2d');
             try {
                 const response = await fetch(apiEndpoint);
                 if (!response.ok) throw new Error(`Network error for ${chartConfig.label}`);
                 const apiData = await response.json();
+
+                const dataMap = new Map();
+                for (const d of apiData) {
+                    // For aggregated data, the date won't have a time part
+                    const key = d.start_date.includes('T') ? d.start_date.split('T')[0] : d.start_date;
+                    dataMap.set(key, d.record_value);
+                }
+                
                 if (apiData.length === 0) { ctx.font = "16px Arial"; ctx.fillText(`No data available for ${chartConfig.label}`, 10, 50); return; }
                 const transform = chartConfig.transform || (y => y);
-                const chartData = { datasets: [{ label: chartConfig.label, data: apiData.map(d => ({ x: d.start_date, y: transform(d.record_value) })), borderColor: chartConfig.borderColor, backgroundColor: chartConfig.backgroundColor, borderWidth: 2, pointRadius: 1.5, tension: 0.1 }] };
-                const minDate = new Date(apiData[0].start_date);
-                const maxDate = new Date(apiData[apiData.length - 1].start_date);
-                new Chart(ctx, { type: 'line', data: chartData,
-                    options: { responsive: true, maintainAspectRatio: false,
-                        scales: {
-                            x: {
-                                type: 'time', min: minDate, max: maxDate,
-                                time: { unit: 'day', displayFormats: { day: 'EEE dd.MM.yy' } },
-                                // MODIFIED: Ticks configuration for better mobile layout
-                                ticks: { autoSkip: true, maxTicksLimit: 8, maxRotation: 45 }
-                            },
-                            y: { beginAtZero: false, title: { display: true, text: chartConfig.yAxisLabel } }
-                        },
-                        plugins: { zoom: { ...baseZoomOptions, limits: { x: { min: minDate, max: maxDate } } } }
-                    }
-                });
+
+                const chartData = {
+                    labels: fullDateLabels,
+                    datasets: [{
+                        label: chartConfig.label,
+                        data: fullDateLabels.map(date => {
+                            const value = dataMap.get(date);
+                            return value !== undefined ? transform(value) : null;
+                        }),
+                        borderColor: chartConfig.borderColor, backgroundColor: chartConfig.backgroundColor,
+                        borderWidth: 2, pointRadius: 1.5, tension: 0.1,
+                        spanGaps: true 
+                    }]
+                };
+
+                new Chart(ctx, { type: 'line', data: chartData, options: { responsive: true, maintainAspectRatio: false, scales: { x: { type: 'time', min: minDate, max: maxDate, time: { unit: 'day', displayFormats: { day: 'EEE dd.MM.yy' } }, ticks: { autoSkip: true, maxTicksLimit: 8, maxRotation: 45 } }, y: { beginAtZero: false, title: { display: true, text: chartConfig.yAxisLabel } } }, plugins: { zoom: { ...baseZoomOptions, limits: { x: { min: minDate, max: maxDate } } } } } });
             } catch (error) { console.error(`Failed to load data for ${chartConfig.label}:`, error); ctx.font = "16px Arial"; ctx.fillText(`Could not load chart: ${error.message}`, 10, 50); }
         }
 
-        async function createSleepChart(days) {
+        async function createSleepChart(days, fullDateLabels, minDate, maxDate) {
             const ctx = document.getElementById('sleepChart').getContext('2d');
             try {
                 const response = await fetch(`/api/sleep?days=${days}`);
                 if (!response.ok) throw new Error('Network error for Sleep Data');
                 const sleepData = await response.json();
-                if (sleepData.labels.length === 0) { ctx.font = "16px Arial"; ctx.fillText(`No data available for Sleep`, 10, 50); return; }
+                if (sleepData.labels.length === 0) { ctx.font = "16px Arial"; ctx.fillText(`No data available for Sleep Stages`, 10, 50); return; }
+                
                 const stageConfig = { 'HKCategoryValueSleepAnalysisAwake': { label: 'Awake', backgroundColor: 'rgba(255, 99, 132, 0.7)' }, 'HKCategoryValueSleepAnalysisAsleepREM': { label: 'REM', backgroundColor: 'rgba(54, 162, 235, 0.7)' }, 'HKCategoryValueSleepAnalysisAsleepCore': { label: 'Core', backgroundColor: 'rgba(75, 192, 192, 0.7)' }, 'HKCategoryValueSleepAnalysisAsleepDeep': { label: 'Deep', backgroundColor: 'rgba(153, 102, 255, 0.7)' } };
-                const datasets = Object.keys(stageConfig).map(stageKey => ({ label: stageConfig[stageKey].label, backgroundColor: stageConfig[stageKey].backgroundColor, data: sleepData.labels.map(date => sleepData.stages[stageKey][date] || 0) }));
-                const minDate = new Date(sleepData.labels[0]);
-                const maxDate = new Date(sleepData.labels[sleepData.labels.length - 1]);
-                new Chart(ctx, { type: 'bar', data: { labels: sleepData.labels, datasets: datasets },
-                    options: { responsive: true, maintainAspectRatio: false,
-                        scales: {
-                            x: {
-                                stacked: true, type: 'time', min: minDate, max: maxDate,
-                                time: { unit: 'day', displayFormats: { day: 'EEE dd.MM.yy' } },
-                                // MODIFIED: Ticks configuration for better mobile layout
-                                ticks: { autoSkip: true, maxTicksLimit: 8, maxRotation: 45 }
-                            },
-                            y: { stacked: true, title: { display: true, text: 'Minutes' } }
-                        },
-                        plugins: { zoom: { ...baseZoomOptions, limits: { x: { min: minDate, max: maxDate } } } }
-                    }
+                
+                const datasets = Object.keys(stageConfig).map(stageKey => ({
+                    label: stageConfig[stageKey].label,
+                    backgroundColor: stageConfig[stageKey].backgroundColor,
+                    data: fullDateLabels.map(date => sleepData.stages[stageKey]?.[date] || 0)
+                }));
+
+                new Chart(ctx, { type: 'bar', data: { labels: fullDateLabels, datasets: datasets }, 
+                    options: { responsive: true, maintainAspectRatio: false, scales: { x: { stacked: true, type: 'time', min: minDate, max: maxDate, time: { unit: 'day', displayFormats: { day: 'EEE dd.MM.yy' } }, ticks: { autoSkip: true, maxTicksLimit: 8, maxRotation: 45 } }, y: { stacked: true, title: { display: true, text: 'Minutes' } } }, plugins: { zoom: { ...baseZoomOptions, limits: { x: { min: minDate, max: maxDate } } } } } 
                 });
             } catch (error) { console.error('Failed to load data for Sleep Chart:', error); ctx.font = "16px Arial"; ctx.fillText(`Could not load chart: ${error.message}`, 10, 50); }
         }
 
-        async function createBloodPressureChart(days) {
+        async function createBloodPressureChart(days, fullDateLabels, minDate, maxDate) {
             const ctx = document.getElementById('bloodPressureChart').getContext('2d');
             try {
                 const [systolicResponse, diastolicResponse] = await Promise.all([ fetch(`/api/data?type=HKQuantityTypeIdentifierBloodPressureSystolic&days=${days}`), fetch(`/api/data?type=HKQuantityTypeIdentifierBloodPressureDiastolic&days=${days}`) ]);
@@ -171,23 +107,20 @@
                 const systolicData = await systolicResponse.json();
                 const diastolicData = await diastolicResponse.json();
                 if (systolicData.length === 0 && diastolicData.length === 0) { ctx.font = "16px Arial"; ctx.fillText(`No data available for Blood Pressure`, 10, 50); return; }
-                const chartData = { datasets: [ { label: 'Systolic', data: systolicData.map(d => ({x: d.start_date, y: d.record_value})), borderColor: 'rgb(255, 99, 132)', backgroundColor: 'rgba(255, 99, 132, 0.5)', borderWidth: 2, pointRadius: 2.5, tension: 0.1 }, { label: 'Diastolic', data: diastolicData.map(d => ({x: d.start_date, y: d.record_value})), borderColor: 'rgb(54, 162, 235)', backgroundColor: 'rgba(54, 162, 235, 0.5)', borderWidth: 2, pointRadius: 2.5, tension: 0.1 } ] };
-                const allDates = [ ...systolicData.map(d => new Date(d.start_date)), ...diastolicData.map(d => new Date(d.start_date)) ];
-                const minDate = new Date(Math.min(...allDates));
-                const maxDate = new Date(Math.max(...allDates));
-                new Chart(ctx, { type: 'line', data: chartData,
-                    options: { responsive: true, maintainAspectRatio: false,
-                        scales: {
-                            x: {
-                                type: 'time', min: minDate, max: maxDate,
-                                time: { unit: 'day', displayFormats: { day: 'EEE dd.MM.yy' } },
-                                // MODIFIED: Ticks configuration for better mobile layout
-                                ticks: { autoSkip: true, maxTicksLimit: 8, maxRotation: 45 }
-                            },
-                            y: { beginAtZero: false, title: { display: true, text: 'mmHg' } }
-                        },
-                        plugins: { zoom: { ...baseZoomOptions, limits: { x: { min: minDate, max: maxDate } } } }
-                    }
+                
+                const systolicMap = new Map(systolicData.map(d => [d.start_date.split('T')[0], d.record_value]));
+                const diastolicMap = new Map(diastolicData.map(d => [d.start_date.split('T')[0], d.record_value]));
+
+                const chartData = { 
+                    labels: fullDateLabels,
+                    datasets: [ 
+                        { label: 'Systolic', data: fullDateLabels.map(date => systolicMap.get(date) || null), borderColor: 'rgb(255, 99, 132)', backgroundColor: 'rgba(255, 99, 132, 0.5)', borderWidth: 2, pointRadius: 2.5, tension: 0.1, spanGaps: true },
+                        { label: 'Diastolic', data: fullDateLabels.map(date => diastolicMap.get(date) || null), borderColor: 'rgb(54, 162, 235)', backgroundColor: 'rgba(54, 162, 235, 0.5)', borderWidth: 2, pointRadius: 2.5, tension: 0.1, spanGaps: true }
+                    ]
+                };
+
+                new Chart(ctx, { type: 'line', data: chartData, 
+                    options: { responsive: true, maintainAspectRatio: false, scales: { x: { type: 'time', min: minDate, max: maxDate, time: { unit: 'day', displayFormats: { day: 'EEE dd.MM.yy' } }, ticks: { autoSkip: true, maxTicksLimit: 8, maxRotation: 45 } }, y: { beginAtZero: false, title: { display: true, text: 'mmHg' } } }, plugins: { zoom: { ...baseZoomOptions, limits: { x: { min: minDate, max: maxDate } } } } } 
                 });
             } catch (error) { console.error('Failed to load data for Blood Pressure Chart:', error); ctx.font = "16px Arial"; ctx.fillText(`Could not load chart: ${error.message}`, 10, 50); }
         }
@@ -226,18 +159,35 @@
 
         function loadAllCharts(days) {
             clearDashboard();
-            createSleepChart(days);
-            createBloodPressureChart(days);
-            createChart('respiratoryRateChart', `/api/data?type=HKQuantityTypeIdentifierRespiratoryRate&days=${days}`, { label: 'Respiratory Rate', borderColor: 'rgb(4, 186, 179)', backgroundColor: 'rgba(4, 186, 179, 0.5)', yAxisLabel: 'breaths/min' });
-            createChart('bodyTempChart', `/api/data?type=HKQuantityTypeIdentifierBodyTemperature&days=${days}`, { label: 'Body Temperature', borderColor: 'rgb(255, 128, 0)', backgroundColor: 'rgba(255, 128, 0, 0.5)', yAxisLabel: '°C' });
-            createChart('restingEnergyChart', `/api/data?type=HKQuantityTypeIdentifierBasalEnergyBurned&days=${days}&aggregate=sum`, { label: 'Resting Energy Burned', borderColor: 'rgb(75, 192, 192)', backgroundColor: 'rgba(75, 192, 192, 0.5)', yAxisLabel: 'kcal' });
-            createChart('bloodOxygenChart', `/api/data?type=HKQuantityTypeIdentifierOxygenSaturation&days=${days}`, { label: 'Blood Oxygen (SpO2)', borderColor: 'rgb(255, 26, 104)', backgroundColor: 'rgba(255, 26, 104, 0.5)', yAxisLabel: '%', transform: (y) => y * 100 });
-            createChart('restingHeartRateChart', `/api/data?type=HKQuantityTypeIdentifierRestingHeartRate&days=${days}`, { label: 'Resting Heart Rate', borderColor: 'rgb(255, 99, 132)', backgroundColor: 'rgba(255, 99, 132, 0.5)', yAxisLabel: 'bpm' });
-            createChart('stepsChart', `/api/data?type=HKQuantityTypeIdentifierStepCount&days=${days}&aggregate=sum`, { label: 'Daily Steps', borderColor: 'rgb(54, 162, 235)', backgroundColor: 'rgba(54, 162, 235, 0.5)', yAxisLabel: 'Count' });
-            createChart('activeEnergyChart', `/api/data?type=HKQuantityTypeIdentifierActiveEnergyBurned&days=${days}&aggregate=sum`, { label: 'Active Energy Burned', borderColor: 'rgb(255, 159, 64)', backgroundColor: 'rgba(255, 159, 64, 0.5)', yAxisLabel: 'kcal' });
-            createChart('hrvChart', `/api/data?type=HKQuantityTypeIdentifierHeartRateVariabilitySDNN&days=${days}`, { label: 'Heart Rate Variability (SDNN)', borderColor: 'rgb(153, 102, 255)', backgroundColor: 'rgba(153, 102, 255, 0.5)', yAxisLabel: 'ms' });
-        }
+            
+            const fullDateLabels = [];
+            const endDate = new Date();
+            endDate.setHours(23, 59, 59, 999);
+            const startDate = new Date();
+            startDate.setDate(startDate.getDate() - (days - 1));
+            startDate.setHours(0, 0, 0, 0);
 
+            let currentDate = new Date(startDate);
+            while (currentDate <= endDate) {
+                fullDateLabels.push(currentDate.toISOString().split('T')[0]);
+                currentDate.setDate(currentDate.getDate() + 1);
+            }
+            const minDate = startDate;
+            const maxDate = endDate;
+
+            createSleepChart(days, fullDateLabels, minDate, maxDate);
+            createBloodPressureChart(days, fullDateLabels, minDate, maxDate);
+            
+            createChart('restingHeartRateChart', `/api/data?type=HKQuantityTypeIdentifierRestingHeartRate&days=${days}`, { label: 'Resting Heart Rate', borderColor: 'rgb(255, 99, 132)', backgroundColor: 'rgba(255, 99, 132, 0.5)', yAxisLabel: 'bpm' }, fullDateLabels, minDate, maxDate);
+            createChart('hrvChart', `/api/data?type=HKQuantityTypeIdentifierHeartRateVariabilitySDNN&days=${days}`, { label: 'Heart Rate Variability (SDNN)', borderColor: 'rgb(153, 102, 255)', backgroundColor: 'rgba(153, 102, 255, 0.5)', yAxisLabel: 'ms' }, fullDateLabels, minDate, maxDate);
+            createChart('respiratoryRateChart', `/api/data?type=HKQuantityTypeIdentifierRespiratoryRate&days=${days}`, { label: 'Respiratory Rate', borderColor: 'rgb(4, 186, 179)', backgroundColor: 'rgba(4, 186, 179, 0.5)', yAxisLabel: 'breaths/min' }, fullDateLabels, minDate, maxDate);
+            createChart('bodyTempChart', `/api/data?type=HKQuantityTypeIdentifierBodyTemperature&days=${days}`, { label: 'Body Temperature', borderColor: 'rgb(255, 128, 0)', backgroundColor: 'rgba(255, 128, 0, 0.5)', yAxisLabel: '°C' }, fullDateLabels, minDate, maxDate);
+            createChart('bloodOxygenChart', `/api/data?type=HKQuantityTypeIdentifierOxygenSaturation&days=${days}`, { label: 'Blood Oxygen (SpO2)', borderColor: 'rgb(255, 26, 104)', backgroundColor: 'rgba(255, 26, 104, 0.5)', yAxisLabel: '%', transform: (y) => y * 100 }, fullDateLabels, minDate, maxDate);
+            createChart('stepsChart', `/api/data?type=HKQuantityTypeIdentifierStepCount&days=${days}&aggregate=sum`, { label: 'Daily Steps', borderColor: 'rgb(54, 162, 235)', backgroundColor: 'rgba(54, 162, 235, 0.5)', yAxisLabel: 'Count' }, fullDateLabels, minDate, maxDate);
+            createChart('restingEnergyChart', `/api/data?type=HKQuantityTypeIdentifierBasalEnergyBurned&days=${days}&aggregate=sum`, { label: 'Resting Energy Burned', borderColor: 'rgb(75, 192, 192)', backgroundColor: 'rgba(75, 192, 192, 0.5)', yAxisLabel: 'kcal' }, fullDateLabels, minDate, maxDate);
+            createChart('activeEnergyChart', `/api/data?type=HKQuantityTypeIdentifierActiveEnergyBurned&days=${days}&aggregate=sum`, { label: 'Active Energy Burned', borderColor: 'rgb(255, 159, 64)', backgroundColor: 'rgba(255, 159, 64, 0.5)', yAxisLabel: 'kcal' }, fullDateLabels, minDate, maxDate);
+        }
+        
         function applyTheme(isDark) {
             if (isDark) {
                 document.body.classList.add('dark-mode');
@@ -294,14 +244,14 @@
             const isDark = savedTheme ? savedTheme === 'dark' : prefersDark;
             darkModeCheckbox.checked = isDark;
             applyTheme(isDark);
-
+            
             darkModeCheckbox.addEventListener('change', () => {
                 const isChecked = darkModeCheckbox.checked;
                 localStorage.setItem('theme', isChecked ? 'dark' : 'light');
                 applyTheme(isChecked);
                 loadDashboard(currentDays);
             });
-
+            
             dateRangeSelector.addEventListener('click', (event) => {
                 if (event.target.tagName === 'BUTTON') {
                     dateRangeSelector.querySelectorAll('.date-btn').forEach(btn => btn.classList.remove('active'));
