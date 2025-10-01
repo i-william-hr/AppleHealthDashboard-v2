@@ -29,7 +29,9 @@ Linux Debian: apt install python3 python3-flask python3-waitress
 Linux: python3 app.py
 
 
-#Visit Webserver and upload your ZIP file (can be done directly from iPhone), this will start the import and redirect you to the Dashboard
+#Visit Webserver and upload your ZIP file (can be done directly from iPhone), this will start the import and redirect you to the Dashboard - To update the data simply re-export on your device and re-upload
+
+
 
 http://127.0.0.1:8080/upload
 
