@@ -8,7 +8,9 @@
     <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@2.0.1/dist/chartjs-plugin-zoom.min.js"></script>
     <style>
-        :root{--bg-color:#f0f2f5;--text-color:#1c1e21;--card-bg-color:#fff;--card-shadow:0 2px 4px rgba(0,0,0,0.1);--header-color:#000;--button-bg:#e4e6eb;--button-text:#050505;--button-active-bg:#007aff;--button-active-text:white;--chart-grid-color:rgba(0,0,0,0.1)}body.dark-mode{--bg-color:#18191a;--text-color:#e4e6eb;--card-bg-color:#242526;--card-shadow:0 2px 4px rgba(0,0,0,0.3);--header-color:#e4e6eb;--button-bg:#3a3b3c;--button-text:#e4e6eb;--button-active-bg:#2e89ff;--button-active-text:white;--chart-grid-color:rgba(255,255,255,0.1)}body{font-family:-apple-system,BlinkMacSystemFont,sans-serif;background-color:var(--bg-color);color:var(--text-color);margin:0;padding:15px;transition:background-color .3s,color .3s}.header{text-align:center;margin-bottom:20px;position:relative}.title-bar{display:flex;justify-content:space-between;align-items:center;padding:0 10px}h1{color:var(--header-color);font-size:1.5em;text-align:left;margin:0}#date-range-selector{margin-top:15px}#date-range-selector button{background:var(--button-bg);color:var(--button-text);border:none;border-radius:6px;padding:8px 12px;margin:0 5px;cursor:pointer;font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:14px}#date-range-selector button.active{background:var(--button-active-bg);color:var(--button-active-text);font-weight:600}.summary-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:15px;margin-bottom:20px}.summary-card{background-color:var(--card-bg-color);border-radius:8px;box-shadow:var(--card-shadow);padding:15px;text-align:center}.summary-card h2{margin:0;font-size:1.5em;color:var(--header-color)}.summary-card p{margin:5px 0 0;font-size:.8em;text-transform:uppercase}.dashboard-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(350px,1fr));gap:15px}.chart-container{background:var(--card-bg-color);border-radius:8px;box-shadow:var(--card-shadow);padding:15px}.dark-mode-toggle{flex-shrink:0;margin-left:15px}.switch{position:relative;display:inline-block;width:50px;height:28px}.switch input{opacity:0;width:0;height:0}.slider{position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background-color:#ccc;-webkit-transition:.4s;transition:.4s}.slider:before{position:absolute;content:"";height:20px;width:20px;left:4px;bottom:4px;background-color:white;-webkit-transition:.4s;transition:.4s}input:checked+.slider{background-color:#2196F3}input:checked+.slider:before{-webkit-transform:translateX(22px);-ms-transform:translateX(22px);transform:translateX(22px)}.slider.round{border-radius:28px}.slider.round:before{border-radius:50%}#status-banner{padding:10px;text-align:center;font-weight:500;display:none;margin-bottom:20px;border-radius:6px}#status-banner.running{background-color:#ffc107;color:#333}#status-banner.error{background-color:#dc3545;color:white}
+        :root{--bg-color:#f0f2f5;--text-color:#1c1e21;--card-bg-color:#fff;--card-shadow:0 2px 4px rgba(0,0,0,0.1);--header-color:#000;--button-bg:#e4e6eb;--button-text:#050505;--button-active-bg:#007aff;--button-active-text:white;--chart-grid-color:rgba(0,0,0,0.1);--link-color:#007aff;}body.dark-mode{--bg-color:#18191a;--text-color:#e4e6eb;--card-bg-color:#242526;--card-shadow:0 2px 4px rgba(0,0,0,0.3);--header-color:#e4e6eb;--button-bg:#3a3b3c;--button-text:#e4e6eb;--button-active-bg:#2e89ff;--button-active-text:white;--chart-grid-color:rgba(255,255,255,0.1);--link-color:#4dabf7;}body{font-family:-apple-system,BlinkMacSystemFont,sans-serif;background-color:var(--bg-color);color:var(--text-color);margin:0;padding:15px;transition:background-color .3s,color .3s}.header{text-align:center;margin-bottom:20px;position:relative}.title-bar{display:flex;justify-content:space-between;align-items:center;padding:0 10px}h1{color:var(--header-color);font-size:1.5em;text-align:left;margin:0}#date-range-selector{margin-top:15px}#date-range-selector button{background:var(--button-bg);color:var(--button-text);border:none;border-radius:6px;padding:8px 12px;margin:0 5px;cursor:pointer;font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:14px}#date-range-selector button.active{background:var(--button-active-bg);color:var(--button-active-text);font-weight:600}a{color:var(--link-color);text-decoration:none}a:hover{text-decoration:underline}.summary-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:15px;margin-bottom:20px}.summary-card{background-color:var(--card-bg-color);border-radius:8px;box-shadow:var(--card-shadow);padding:15px;text-align:center}.summary-card h2{margin:0;font-size:1.5em;color:var(--header-color)}.summary-card p{margin:5px 0 0;font-size:.8em;text-transform:uppercase}.dashboard-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(350px,1fr));gap:15px}.chart-container{background:var(--card-bg-color);border-radius:8px;box-shadow:var(--card-shadow);padding:15px}.dark-mode-toggle{flex-shrink:0;margin-left:15px}.switch{position:relative;display:inline-block;width:50px;height:28px}.switch input{opacity:0;width:0;height:0}.slider{position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background-color:#ccc;-webkit-transition:.4s;transition:.4s}.slider:before{position:absolute;content:"";height:20px;width:20px;left:4px;bottom:4px;background-color:white;-webkit-transition:.4s;transition:.4s}input:checked+.slider{background-color:#2196F3}input:checked+.slider:before{-webkit-transform:translateX(22px);-ms-transform:translateX(22px);transform:translateX(22px)}.slider.round{border-radius:28px}.slider.round:before{border-radius:50%}#status-banner{padding:10px;text-align:center;font-weight:500;display:none;margin-bottom:20px;border-radius:6px}#status-banner.running{background-color:#ffc107;color:#333}#status-banner.error{background-color:#dc3545;color:white}
+        .credits { margin-top: 15px; font-size: 0.8em; opacity: 0.7; }
+        .credits a { color: var(--link-color); }
     </style>
 </head>
 <body>
@@ -30,6 +32,9 @@
             <button class="date-btn" data-days="365">1 Year</button>
         </div>
         <p><a href="/upload">Upload New Data</a></p>
+        <div class="credits">
+            (C) 2025 www.william.hr // <a href="https://github.com/i-william-hr/AppleHealthDashboard-v2/tree/main" target="_blank" rel="noopener noreferrer">Github Source Code</a>
+        </div>
     </div>
     <div class="summary-grid">
         <div class="summary-card"><h2 id="rhr-summary-value">- / -</h2><p>Lowest / Highest RHR</p></div>
@@ -50,23 +55,34 @@
                 if (!response.ok) throw new Error(`Network error for ${chartConfig.label}`);
                 const apiData = await response.json();
                 
-                if (apiData.length === 0) {
-                    container.style.display = 'none'; // MODIFIED: Hide container
-                    return;
+                const dataMap = new Map();
+                for (const d of apiData) {
+                    const key = d.start_date.includes('T') ? d.start_date.split('T')[0] : d.start_date;
+                    dataMap.set(key, d.record_value);
                 }
-                container.style.display = 'block'; // Ensure it's visible if it was hidden before
 
-                const dataMap = new Map(apiData.map(d => [d.start_date.split('T')[0], d.record_value]));
+                if (apiData.length === 0 && !fullDateLabels.some(date => dataMap.has(date))) { 
+                    container.style.display = 'none'; 
+                    return; 
+                }
+                container.style.display = 'block';
+                
                 const transform = chartConfig.transform || (y => y);
+
                 const chartData = {
                     labels: fullDateLabels,
                     datasets: [{
                         label: chartConfig.label,
-                        data: fullDateLabels.map(date => { const value = dataMap.get(date); return value !== undefined ? transform(value) : null; }),
+                        data: fullDateLabels.map(date => {
+                            const value = dataMap.get(date);
+                            return value !== undefined ? transform(value) : null;
+                        }),
                         borderColor: chartConfig.borderColor, backgroundColor: chartConfig.backgroundColor,
-                        borderWidth: 2, pointRadius: 1.5, tension: 0.1, spanGaps: true 
+                        borderWidth: 2, pointRadius: 1.5, tension: 0.1,
+                        spanGaps: true 
                     }]
                 };
+
                 new Chart(canvas.getContext('2d'), { type: 'line', data: chartData, options: { responsive: true, maintainAspectRatio: false, scales: { x: { type: 'time', min: minDate, max: maxDate, time: { unit: 'day', displayFormats: { day: 'EEE dd.MM.yy' } }, ticks: { autoSkip: true, maxTicksLimit: 8, maxRotation: 45 } }, y: { beginAtZero: false, title: { display: true, text: chartConfig.yAxisLabel } } }, plugins: { legend: { labels: { boxWidth: 20 } }, zoom: { ...baseZoomOptions, limits: { x: { min: minDate, max: maxDate } } } } } });
             } catch (error) { console.error(`Failed to load data for ${chartConfig.label}:`, error); container.style.display = 'none'; }
         }
@@ -78,20 +94,20 @@
                 const response = await fetch(`/api/sleep?days=${days}`);
                 if (!response.ok) throw new Error('Network error for Sleep Data');
                 const sleepData = await response.json();
-
-                if (sleepData.labels.length === 0) {
-                    container.style.display = 'none'; // MODIFIED: Hide container
-                    return;
-                }
+                if (sleepData.labels.length === 0) { container.style.display = 'none'; return; }
                 container.style.display = 'block';
-
+                
                 const stageConfig = { 'HKCategoryValueSleepAnalysisAwake': { label: 'Awake', backgroundColor: 'rgba(255, 99, 132, 0.7)' }, 'HKCategoryValueSleepAnalysisAsleepREM': { label: 'REM', backgroundColor: 'rgba(54, 162, 235, 0.7)' }, 'HKCategoryValueSleepAnalysisAsleepCore': { label: 'Core', backgroundColor: 'rgba(75, 192, 192, 0.7)' }, 'HKCategoryValueSleepAnalysisAsleepDeep': { label: 'Deep', backgroundColor: 'rgba(153, 102, 255, 0.7)' } };
+                
                 const datasets = Object.keys(stageConfig).map(stageKey => ({
                     label: stageConfig[stageKey].label,
                     backgroundColor: stageConfig[stageKey].backgroundColor,
                     data: fullDateLabels.map(date => sleepData.stages[stageKey]?.[date] || 0)
                 }));
-                new Chart(canvas.getContext('2d'), { type: 'bar', data: { labels: fullDateLabels, datasets: datasets }, options: { responsive: true, maintainAspectRatio: false, scales: { x: { stacked: true, type: 'time', min: minDate, max: maxDate, time: { unit: 'day', displayFormats: { day: 'EEE dd.MM.yy' } }, ticks: { autoSkip: true, maxTicksLimit: 8, maxRotation: 45 } }, y: { stacked: true, title: { display: true, text: 'Minutes' } } }, plugins: { legend: { labels: { boxWidth: 20 } }, zoom: { ...baseZoomOptions, limits: { x: { min: minDate, max: maxDate } } } } } });
+
+                new Chart(canvas.getContext('2d'), { type: 'bar', data: { labels: fullDateLabels, datasets: datasets }, 
+                    options: { responsive: true, maintainAspectRatio: false, scales: { x: { stacked: true, type: 'time', min: minDate, max: maxDate, time: { unit: 'day', displayFormats: { day: 'EEE dd.MM.yy' } }, ticks: { autoSkip: true, maxTicksLimit: 8, maxRotation: 45 } }, y: { stacked: true, title: { display: true, text: 'Minutes' } } }, plugins: { legend: { labels: { boxWidth: 20 } }, zoom: { ...baseZoomOptions, limits: { x: { min: minDate, max: maxDate } } } } } 
+                });
             } catch (error) { console.error('Failed to load data for Sleep Chart:', error); container.style.display = 'none'; }
         }
 
@@ -103,15 +119,12 @@
                 if (!systolicResponse.ok || !diastolicResponse.ok) throw new Error('Network error for Blood Pressure');
                 const systolicData = await systolicResponse.json();
                 const diastolicData = await diastolicResponse.json();
-
-                if (systolicData.length === 0 && diastolicData.length === 0) {
-                    container.style.display = 'none'; // MODIFIED: Hide container
-                    return;
-                }
+                if (systolicData.length === 0 && diastolicData.length === 0) { container.style.display = 'none'; return; }
                 container.style.display = 'block';
                 
                 const systolicMap = new Map(systolicData.map(d => [d.start_date.split('T')[0], d.record_value]));
                 const diastolicMap = new Map(diastolicData.map(d => [d.start_date.split('T')[0], d.record_value]));
+
                 const chartData = { 
                     labels: fullDateLabels,
                     datasets: [ 
@@ -119,7 +132,10 @@
                         { label: 'Diastolic', data: fullDateLabels.map(date => diastolicMap.get(date) || null), borderColor: 'rgb(54, 162, 235)', backgroundColor: 'rgba(54, 162, 235, 0.5)', borderWidth: 2, pointRadius: 2.5, tension: 0.1, spanGaps: true }
                     ]
                 };
-                new Chart(canvas.getContext('2d'), { type: 'line', data: chartData, options: { responsive: true, maintainAspectRatio: false, scales: { x: { type: 'time', min: minDate, max: maxDate, time: { unit: 'day', displayFormats: { day: 'EEE dd.MM.yy' } }, ticks: { autoSkip: true, maxTicksLimit: 8, maxRotation: 45 } }, y: { beginAtZero: false, title: { display: true, text: 'mmHg' } } }, plugins: { legend: { labels: { boxWidth: 20 } }, zoom: { ...baseZoomOptions, limits: { x: { min: minDate, max: maxDate } } } } } });
+
+                new Chart(canvas.getContext('2d'), { type: 'line', data: chartData, 
+                    options: { responsive: true, maintainAspectRatio: false, scales: { x: { type: 'time', min: minDate, max: maxDate, time: { unit: 'day', displayFormats: { day: 'EEE dd.MM.yy' } }, ticks: { autoSkip: true, maxTicksLimit: 8, maxRotation: 45 } }, y: { beginAtZero: false, title: { display: true, text: 'mmHg' } } }, plugins: { legend: { labels: { boxWidth: 20 } }, zoom: { ...baseZoomOptions, limits: { x: { min: minDate, max: maxDate } } } } } 
+                });
             } catch (error) { console.error('Failed to load data for Blood Pressure Chart:', error); container.style.display = 'none'; }
         }
 
