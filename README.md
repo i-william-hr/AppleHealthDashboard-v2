@@ -1,4 +1,4 @@
-# AppleHealthDashboard-v2
+# AppleHealthDashboard-v2 Nginx Reverse + Auth
 This takes data from an Apple watch, saves it into a database and then serves a webserver local on port 8080 - Now with upload fuction.
 
 #Get data from iPhone
