@@ -33,7 +33,7 @@ Linux Debian: apt install python3 python3-flask python3-waitress python3-flask-h
 client_max_body_size 10G;
 
 
-#Start, Automatically binds on port 8080 on all IPs (can be changed in app.py if needed)
+#Start
 
 Linux: python3 app.py
 
@@ -42,8 +42,7 @@ Linux: python3 app.py
 
 
 
-http://127.0.0.1:8080/upload
-
+Access via your nginx domain at /health/
 
 
 
