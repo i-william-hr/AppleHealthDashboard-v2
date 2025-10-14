@@ -28,6 +28,9 @@ Linux Debian: apt install python3 python3-flask python3-waitress python3-flask-h
 
 #Change your nginx sites-enabled to add the proxy with the example from the sites-enabled in the repo
 
+#Change your /etc/nginx/nginx.conf to include iside the http block:
+
+client_max_body_size 10G;
 
 
 #Start, Automatically binds on port 8080 on all IPs (can be changed in app.py if needed)
