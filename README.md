@@ -10,6 +10,7 @@ WARNING: This can be multiple GB even as ZIP
 
 This version supports HTTP BASIC AUTH, AUTH via Token (to eg. set as Widget on Phone homescreen and not always enter User/PW) and is designed to run behind nginx as reverse proxy, so it only binds to 127.0.0.1
 
+URL AUTH can be used by settig a token in app.py and calling /health/?auth=TOKEN
 
 
 
