@@ -8,6 +8,9 @@ Go into  the Health app - Select your Profile - Select Export all data and save 
 WARNING: This can be multiple GB even as ZIP
 
 
+This version supports HTTP BASIC AUTH, AUTH via Token (to eg. set as Widget on Phone homescreen and not always enter User/PW) and is designed to run behind nginx as reverse proxy, so it only binds to 127.0.0.1
+
+
 
 
 #Install python and dependencies
@@ -16,11 +19,13 @@ Python depends on your OS - This was tested on Linux
 
 Windows: py -m pip install Flask
 
-MacOS/Linux: pip3 install Flask waitress
+MacOS/Linux: pip3 install Flask waitress flask-httpauth
 
-Linux Debian: apt install python3 python3-flask python3-waitress
+Linux Debian: apt install python3 python3-flask python3-waitress python3-flask-httpauth
 
 #Save the script in a local directory, keep the structure as in the repository
+
+#Change your nginx sites-enabled to add the proxy with the example from the sites-enabled in the repo
 
 
 
