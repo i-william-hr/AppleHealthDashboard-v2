@@ -8,30 +8,36 @@ import time
 from datetime import datetime, timedelta, timezone 
 from flask import Flask, jsonify, request, Response, render_template, redirect, url_for
 from werkzeug.utils import secure_filename
+from werkzeug.middleware.proxy_fix import ProxyFix
+from flask_httpauth import HTTPBasicAuth
 
-# --- NEW: Configure logging to hide Waitress warnings ---
 import logging
 logger = logging.getLogger('waitress')
 logger.setLevel(logging.ERROR)
-# ---------------------------------------------------------
 
 # --- CONFIGURATION ---
 DB_FILE = 'health.db'
 UPLOAD_FOLDER = 'uploads'
 ALLOWED_EXTENSIONS = {'zip'}
+SECRET_TOKEN = "ACCESSTOKEN"
 
-# --- GLOBAL STATUS VARIABLE ---
-import_status = {
-    "status": "idle",
-    "message": "Awaiting new data upload."
-}
+import_status = { "status": "idle", "message": "Awaiting new data upload." }
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-app.config['MAX_CONTENT_LENGTH'] = 10 * 1024 * 1024 * 1024  # 10 GB upload limit
+app.config['MAX_CONTENT_LENGTH'] = 10 * 1024 * 1024 * 1024
+app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_prefix=1)
 
-# --- The rest of the file is unchanged ---
-# ... (all other functions remain the same) ...
+auth = HTTPBasicAuth()
+
+@auth.verify_password
+def verify_credentials(username, password):
+    if request.args.get('auth') == SECRET_TOKEN:
+        return "token_user"
+    if username == 'USER' and password == 'PASS':
+        return "wm"
+    return None
+
 def run_full_import(zip_path):
     global import_status
     try:
@@ -63,7 +69,7 @@ def run_full_import(zip_path):
                  except OSError: pass
 
 def parse_and_import(xml_path):
-    global import_status
+    global import_status 
     init_db()
     context = ET.iterparse(xml_path, events=('end',))
     records_batch = []
@@ -128,12 +134,14 @@ def init_db():
                 record_value REAL NOT NULL, start_date TEXT NOT NULL)''')
         cursor.execute('CREATE INDEX IF NOT EXISTS idx_type_date ON health_data (record_type, start_date)')
 
-# --- FLASK ROUTES ---
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 @app.route('/upload', methods=['GET', 'POST'])
+@auth.login_required
 def upload_file():
+    # MODIFIED: Get the auth token at the start of the function
+    auth_token = request.args.get('auth')
     if request.method == 'POST':
         if 'file' not in request.files: return redirect(request.url)
         file = request.files['file']
@@ -144,14 +152,22 @@ def upload_file():
         file.save(save_path)
         thread = threading.Thread(target=run_full_import, args=(save_path,))
         thread.start()
-        return redirect(url_for('dashboard'))
-    return render_template('upload.html')
+        
+        # MODIFIED: Add the auth token to the redirect URL
+        redirect_url = url_for('dashboard')
+        if auth_token:
+            redirect_url += f"?auth={auth_token}"
+        return redirect(redirect_url)
+    
+    return render_template('upload.html', auth_token=auth_token)
 
 @app.route('/api/import-status')
+@auth.login_required
 def get_import_status():
     return jsonify(import_status)
 
 @app.route('/api/ack-status', methods=['POST'])
+@auth.login_required
 def acknowledge_status():
     global import_status
     if import_status['status'] in ['complete', 'error']:
@@ -160,10 +176,13 @@ def acknowledge_status():
     return jsonify({"success": True})
 
 @app.route('/')
+@auth.login_required
 def dashboard():
-    return render_template('index.html')
+    auth_token = request.args.get('auth')
+    return render_template('index.html', auth_token=auth_token)
 
 @app.route('/api/data')
+@auth.login_required
 def get_data():
     if not os.path.exists(DB_FILE): return jsonify([])
     data_type = request.args.get('type')
@@ -186,6 +205,7 @@ def get_data():
         return jsonify(data)
 
 @app.route('/api/sleep')
+@auth.login_required
 def get_sleep_data():
     if not os.path.exists(DB_FILE): return jsonify({'labels': [], 'stages': {}})
     days = int(request.args.get('days', 30))
@@ -210,6 +230,7 @@ def get_sleep_data():
         return jsonify({'labels': sorted_dates, 'stages': sleep_stages})
 
 @app.route('/api/summary')
+@auth.login_required
 def get_summary_data():
     if not os.path.exists(DB_FILE): return jsonify({})
     days = int(request.args.get('days', 90))
@@ -251,10 +272,10 @@ if __name__ == '__main__':
         os.makedirs(UPLOAD_FOLDER)
     try:
         from waitress import serve
-        print("Starting production server on http://0.0.0.0:8080")
-        serve(app, host='0.0.0.0', port=8080)
+        print("Starting production server on http://127.0.0.1:8888")
+        serve(app, host='127.0.0.1', port=8888)
     except ImportError:
         print("---\n[WARNING] 'waitress' is not installed. Falling back to the basic Flask server.")
         print("For better performance, please run: pip install waitress\n---")
-        print("Starting development server on http://0.0.0.0:8080")
-        app.run(host='0.0.0.0', port=8080, debug=True)
+        print("Starting development server on http://127.0.0.1:8888")
+        app.run(host='127.0.0.1', port=8888, debug=True)
