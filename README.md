@@ -1,6 +1,8 @@
 # AppleHealthDashboard-v2
 This takes data from an Apple watch, saves it into a database and then serves a webserver local on port 8080 - Now with upload fuction.
 
+Look in branches for nginx reverse proxy compatible version with HTTP BASIC AUTH and Token auth 
+
 #Get data from iPhone
 
 Go into  the Health app - Select your Profile - Select Export all data and save the ZIP file
